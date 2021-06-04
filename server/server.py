@@ -15,6 +15,8 @@ Method is being called by scheduler with one config file
 
 def cron_job_task(config_file: string):
     print(config_file)
+
+    # Read Config file
     config = configparser.ConfigParser()
     config.read(config_file)
     log_files_path = config["Logging Configuration"]["logs.path"]
@@ -37,9 +39,16 @@ def cron_job_task(config_file: string):
             file.close()
 
             # Move logs to archive folder
-
             shutil.move(fqfn, archive_path + '\\' + log_file)
-            # if datetime.fromtimestamp(os.path.getctime(log_file)) == datetime.now() + timedelta(hours=)
+
+    # Check Archive logs
+    log_files_archive = os.listdir(archive_path)
+    for log_file_archive in log_files_archive:
+        fqafn = archive_path + '\\' + log_file_archive
+
+        if datetime.fromtimestamp(os.path.getctime(fqafn)) == (datetime.now() - timedelta(days=30)):
+            os.remove(fqafn)
+
 
 
 def cron_job():
