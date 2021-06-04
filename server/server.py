@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 Method is being called by scheduler with one config file
 :param config_file Config File path for the cron_job_task
 """
+
+
 def cron_job_task(config_file: string):
     print(config_file)
     config = configparser.ConfigParser()
@@ -32,25 +34,29 @@ def cron_job_task(config_file: string):
                     if keyword in line:
                         print("KEYWORD FOUND")
                         # send email
+            file.close()
 
             # Move logs to archive folder
 
             shutil.move(fqfn, archive_path + '\\' + log_file)
-            #if datetime.fromtimestamp(os.path.getctime(log_file)) == datetime.now() + timedelta(hours=)
+            # if datetime.fromtimestamp(os.path.getctime(log_file)) == datetime.now() + timedelta(hours=)
+
 
 def cron_job():
     print("I'm starting the cronjobtask")
 
     # Get all available log files
-    #thread = threading.Thread(target=cron_job_task, args=("../sample/config.ini",))
-    #thread.start()
-
-    cron_job_task("../sample/config.ini")
+    # thread = threading.Thread(target=cron_job_task, args=("../sample/config.ini",))
+    # thread.start()
+    config_files = os.listdir("../sample")
+    for config_file in config_files:
+        fqcn = "../sample/" + config_file
+        print(fqcn)
+        thread = threading.Thread(target=cron_job_task, args=(fqcn,))
+        thread.start()
 
 
 schedule.every(5).seconds.do(cron_job)
 
 while True:
     schedule.run_pending()
-
-
