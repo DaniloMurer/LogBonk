@@ -6,6 +6,24 @@ import configparser
 import os
 import shutil
 from datetime import datetime, timedelta
+import smtplib
+import email_config
+
+
+def send_mail(address, content):
+    # send email
+    print(address, content)
+    smtp_server = smtplib.SMTP(host=email_config.smtp_server, port=email_config.smtp_port)
+    smtp_server.login(email_config.smtp_username, email_config.smtp_password)
+    message = """\
+    Subject: LogBonk Alert
+    
+    {}
+    """.format(content)
+    smtp_server.sendmail(email_config.smtp_username, address, message)
+    smtp_server.close()
+
+
 
 """
 Method is being called by scheduler with one config file
@@ -23,6 +41,7 @@ def cron_job_task(config_file: string):
     log_files = os.listdir(log_files_path)
     archive_path = config["Logging Configuration"]["logs.archive.path"]
     keywords = str(config["Logging Configuration"]["keyword"]).split(";")
+    email = str(config["Mail Configuration"]["mail.to"])
 
     for log_file in log_files:
         if '.log' in log_file:
@@ -34,8 +53,9 @@ def cron_job_task(config_file: string):
             for line in lines:
                 for keyword in keywords:
                     if keyword in line:
-                        print("KEYWORD FOUND")
                         # send email
+                        send_mail(email, line)
+
             file.close()
 
             # Move logs to archive folder
@@ -48,7 +68,6 @@ def cron_job_task(config_file: string):
 
         if datetime.fromtimestamp(os.path.getctime(fqafn)) == (datetime.now() - timedelta(days=30)):
             os.remove(fqafn)
-
 
 
 def cron_job():
