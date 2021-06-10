@@ -11,6 +11,13 @@ import email_config
 
 
 def send_mail(address, content):
+    """
+    Method for sending an E-Mail passing content and To: Address
+
+    :param address: E-Mail Address to send the Mail to
+    :param content: Content of the E-Mail
+    :return: nothing
+    """
     # send email
     print(address, content)
     with smtplib.SMTP(host=email_config.smtp_server, port=email_config.smtp_port) as smtp_server:
@@ -26,13 +33,14 @@ def send_mail(address, content):
         smtp_server.close()
 
 
-"""
-Method is being called by scheduler with one config file
-:param config_file Config File path for the cron_job_task
-"""
-
-
 def cron_job_task(config_file: string):
+    """
+    Method called by cron_job() passing a log file as parameter
+
+    :param config_file: Path to the configfile which is used for the task
+    :return: nothing
+    """
+
     print(config_file)
 
     # Read Config file
@@ -74,6 +82,12 @@ def cron_job_task(config_file: string):
 
 
 def cron_job():
+    """
+    Method called by scheduler which start new threads for cronjob tasks based
+    on the config files found
+
+    :return: nothing
+    """
     print("I'm starting the cronjobtask")
 
     # Get all available log files

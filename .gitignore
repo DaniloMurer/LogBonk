@@ -1,4 +1,4 @@
-.idea
+.idea/*
 venv
 server/email_config.py
 *.pyc
