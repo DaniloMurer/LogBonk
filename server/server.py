@@ -94,13 +94,10 @@ def cron_job():
     config_files = os.listdir("../sample")
     for config_file in config_files:
         fqcn = "../sample/" + config_file
-        #thread = threading.Thread(target=cron_job_task, args=(fqcn,))
-        #thread.start()
         cron_job_task(fqcn)
 
-cron_job()
 
-#schedule.every(5).seconds.do(cron_job)
+schedule.every(5).seconds.do(cron_job)
 
-#while True:
-#    schedule.run_pending()
+while True:
+    schedule.run_pending()
