@@ -1,0 +1,5 @@
+services:
+  logbonk-server:
+    build: .
+    volumes:
+    - ../sample:/app/data
