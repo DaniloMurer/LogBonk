@@ -91,9 +91,9 @@ def cron_job():
     # Get all available log files
     # thread = threading.Thread(target=cron_job_task, args=("../sample/config.ini",))
     # thread.start()
-    config_files = os.listdir("../sample")
+    config_files = os.listdir("./config")
     for config_file in config_files:
-        fqcn = "../sample/" + config_file
+        fqcn = "./config/" + config_file
         cron_job_task(fqcn)
 
 

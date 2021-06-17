@@ -1,5 +1,8 @@
+version: "3"
 services:
   logbonk-server:
-    build: .
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
     volumes:
-    - ../sample:/app/data
+      - /app/data:/app/files/data

@@ -1,10 +1,16 @@
-FROM python:3.8-slim-buster
+FROM python:3.8
 
-WORKDIR /app
+ENTRYPOINT /app
 
-COPY ../ .
+COPY . .
+
+#RUN python -m venv pythonLogBonk
+
+#RUN source pythonLogBonk/bin/activate
+
+#RUN ["/bin/bash", "-c", "source pythonLogBonk/bin/activate"]
 
 RUN pip install schedule
 
-RUN ./server/server.py
+RUN python3 ./server/server.py
 
