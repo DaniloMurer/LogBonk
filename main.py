@@ -47,7 +47,7 @@ tk.Label(master, text="Logs Path").grid(row=5)
 tk.Label(master, text="Logs Archive Path").grid(row=6)
 
 ftpUsernameField = tk.Entry(master)
-ftpPasswordField = tk.Entry(master)
+ftpPasswordField = tk.Entry(master, show="*")
 ftpServerField = tk.Entry(master)
 
 ftpUsernameField.grid(row=0, column=1)

@@ -53,7 +53,7 @@ def cron_job_task(config_file: string):
 
     for log_file in log_files:
         if '.log' in log_file:
-            fqfn = log_files_path + '\\' + log_file
+            fqfn = log_files_path + '/' + log_file
 
             file = open(fqfn, "r")
             lines = file.readlines()
@@ -68,12 +68,12 @@ def cron_job_task(config_file: string):
             file.close()
             print("Moving files")
             # Move logs to archive folder
-            shutil.move(fqfn, archive_path + '\\' + log_file)
+            shutil.move(fqfn, archive_path + '/' + log_file)
 
     # Check Archive logs
     log_files_archive = os.listdir(archive_path)
     for log_file_archive in log_files_archive:
-        fqafn = archive_path + '\\' + log_file_archive
+        fqafn = archive_path + '/' + log_file_archive
 
         if datetime.fromtimestamp(os.path.getctime(fqafn)) <= (datetime.now() - timedelta(days=30)):
             os.remove(fqafn)
@@ -91,10 +91,11 @@ def cron_job():
     # Get all available log files
     # thread = threading.Thread(target=cron_job_task, args=("../sample/config.ini",))
     # thread.start()
-    config_files = os.listdir("./config")
+    config_files = os.listdir("/app/data/config")
     for config_file in config_files:
-        fqcn = "./config/" + config_file
-        cron_job_task(fqcn)
+        if ".ini" in config_file:
+            fqcn = "/app/data/config/" + config_file
+            cron_job_task(fqcn)
 
 
 schedule.every(5).seconds.do(cron_job)
